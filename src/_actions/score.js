@@ -42,3 +42,21 @@ export const saveScoreStudentSuccess = (data) => {
     },
   };
 };
+
+export const addScoreBegin = (data) => {
+  return {
+    type: _typeActions.ADD_SCORE_BEGIN,
+    payload: {
+      data,
+    },
+  };
+};
+
+export const addScoreBeginSuccess = (data) => {
+  return {
+    type: _typeActions.ADD_SCORE_BEGIN_SUC,
+    payload: {
+      data,
+    }
+  }
+}

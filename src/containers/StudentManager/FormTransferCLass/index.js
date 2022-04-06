@@ -17,7 +17,11 @@ const FormTransferClass = (props) => {
   const { classes, openTransfer, handleSubmit, onHandleSubmit } = props;
   const [listClass, setListClass] = useState([]);
   const [listYear, setListYear] = useState([]);
+  const dispatch = useDispatch();
 
+  /**
+   * Hàm Hiển thị Year và Class 1 lần khi mở form
+   */
   useEffect(() => {
     getYearData();
     getClassData();
@@ -28,16 +32,20 @@ const FormTransferClass = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const dispatch = useDispatch();
-  
+  /**
+   * Hàm get Class trực tiếp từ API
+   */
   const getClassData = async () => {
-    const { data, status } = await getListClassAPI();   
+    const { data, status } = await getListClassAPI();
     if (status === 200) {
       setListClass(data.data);
     } else {
       setListClass([]);
     }
   };
+  /**
+   * Hàm get Year trực tiếp từ API
+   */
   const getYearData = async () => {
     const { data, status } = await getListYearAPI();
     if (status === 200) {
@@ -46,10 +54,17 @@ const FormTransferClass = (props) => {
       setListYear([]);
     }
   };
+  /**
+   * Hàm đóng form
+   */
   const onHandleClose = () => {
     dispatch(_formActions.hideModalTransfer());
   };
 
+  /**
+   * Hàm render MenuItem Year của SelectYear
+   * @returns MenuItem  Year
+   */
   const renderYearOptions = () => {
     let xhtml = null;
     if (listYear.length > 0) {
@@ -60,10 +75,13 @@ const FormTransferClass = (props) => {
           </MenuItem>
         );
       });
-    } 
+    }
     return xhtml;
   };
-
+  /**
+   * Hàm render MenuItem Class của SelectClass
+   * @returns MenuItem  Class
+   */
   const renderClassOptions = () => {
     let xhtml = null;
     if (listClass.length > 0) {

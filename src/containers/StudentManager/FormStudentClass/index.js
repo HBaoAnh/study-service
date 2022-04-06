@@ -26,11 +26,16 @@ const FormStudentClass = (props) => {
     reset,
   } = props;
   const dispatch = useDispatch();
-
+  /**
+   * Hàm đóng form
+   */
   const onHandleClose = () => {
     dispatch(_formActions.hideModal());
   };
-
+  /**
+   * Hàm render button xoá
+   * @returns button
+   */
   const renderbtnClearData = () => {
     let xhtml = null;
     if (initialValues.studentId === 0) {

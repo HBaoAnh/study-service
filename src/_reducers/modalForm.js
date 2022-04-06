@@ -19,18 +19,18 @@ const reducer = (state = initialState, action) => {
         openModal: false,
       };
 
-      case _TypesModal.SHOW_MODAL_TRANSFER:
-        return {
-          ...state,
-          openTransfer: true,
-        };
-  
-      case _TypesModal.HIDE_MODAL_TRANSFER:
-        return {
-          ...state,
-          openTransfer: false,
-        };
-  
+    case _TypesModal.SHOW_MODAL_TRANSFER:
+      return {
+        ...state,
+        openTransfer: true,
+      };
+
+    case _TypesModal.HIDE_MODAL_TRANSFER:
+      return {
+        ...state,
+        openTransfer: false,
+      };
+
     default:
       return state;
   }

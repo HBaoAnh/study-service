@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import renderSelectField from "../../../Shares/FormHelper/SelectField";
 import renderTextField from "../../../Shares/FormHelper/TextField";
 import { getAllSubject } from "../../../_apis/subjectAPI";
+import { validateScore } from "../../../Shares/FormHelper/validate";
 
 const FormScore = (props) => {
   const {
@@ -20,11 +21,12 @@ const FormScore = (props) => {
     onHandleSubmit,
     invalid,
     submitting,
-    initialValues,
   } = props;
-  console.log(initialValues);
   const [subjects, setSubjects] = useState([]);
 
+  /**
+   * Hiển thị 1 lần
+   */
   useEffect(() => {
     getDataSubjects();
     return () => {
@@ -32,7 +34,9 @@ const FormScore = (props) => {
     };
   }, []);
   const dispatch = useDispatch();
-
+  /**
+   * Hàm get môn học trực tiếp từ API
+   */
   const getDataSubjects = async () => {
     const { status, data } = await getAllSubject();
     if (status === 200) {
@@ -41,11 +45,16 @@ const FormScore = (props) => {
       setSubjects([]);
     }
   };
-
+  /**
+   * Hàm Đóng form
+   */
   const onHandleClose = () => {
     dispatch(_modalFormActions.hideModal());
   };
-
+  /**
+   * Hàm render MenuItem của Select control
+   * @returns MenuItem
+   */
   const renderOptionsSubjects = () => {
     let xhtml = null;
     if (subjects.length > 0) {
@@ -152,6 +161,7 @@ FormScore.propTypes = {
 
 const withReduxForm = reduxForm({
   form: "Form_Score",
+  validate: validateScore,
 });
 
 export default withStyles(styles)(withReduxForm(FormScore));

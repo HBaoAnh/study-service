@@ -11,13 +11,10 @@ const Menu = () => {
           </Link>
         </div>
         <ul className="nav navbar-nav">
-          <li>
-            <Link to="/">Trang Chủ</Link>
-          </li>
           <li className="dropdown">
-            <Link className="dropdown-toggle" data-toggle="dropdown" to="/">
-              Năm - Lớp - HS <span className="caret"></span>
-            </Link>
+            <a className="dropdown-toggle" data-toggle="dropdown" href="Quản Lý Nội Bộ">
+              Quản Lý Nội Bộ <span className="caret"></span>
+            </a>
             <ul className="dropdown-menu">
               <li>
                 <Link to="/">Năm Học</Link>

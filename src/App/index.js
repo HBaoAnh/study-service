@@ -7,11 +7,36 @@ const App = () => {
       <Menu />
       <div className="container">
         {/* contents */}
-        <div className="mainContens">
-          <Outlet />
+        <Outlet />
+      </div>
+      {/* footer */}
+      <div style={{ height: 100 }}></div>
+      <div
+        style={{
+          position: "fixed",
+          left: 0,
+          bottom: 0,
+          width: "100%",
+        }}
+      >
+        <div
+          style={{
+            backgroundColor: "grey",
+            height: 50,
+            textAlign: "center",
+          }}
+        >
+          Footer contents
         </div>
-        {/* footer */}
-        <div></div>
+        <div
+          style={{
+            backgroundColor: "darkgrey",
+            textAlign: "center",
+            padding: "5px",
+          }}
+        >
+          @copyright
+        </div>
       </div>
     </div>
   );

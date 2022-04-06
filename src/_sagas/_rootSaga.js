@@ -2,11 +2,16 @@ import { takeLatest, takeEvery } from "redux-saga/effects";
 import {
   getStudentByYearClass,
   saveStudentClassSaga,
-  deleteStudentClassSaga,
   transferStudentClassSaga,
 } from "./studentClass";
-import { getScoreByStudentIdSaga, saveScoreStudentSaga } from "./score";
+import { deleteStudentSaga } from "./student";
+import {
+  getScoreByStudentIdSaga,
+  saveScoreStudentSaga,
+  addScoreBeginSaga,
+} from "./score";
 import * as _studentClassActions from "../_constants/studentclass";
+import * as _studentActions from "../_constants/student";
 import * as _scoreActions from "../_constants/score";
 
 function* _rootSaga() {
@@ -19,10 +24,7 @@ function* _rootSaga() {
     _studentClassActions.SAVE_STUDENT_CLASS,
     saveStudentClassSaga
   );
-  yield takeLatest(
-    _studentClassActions.DELETE_STUDENT_CLASS,
-    deleteStudentClassSaga
-  );
+  yield takeLatest(_studentActions.DELETE_STUDENT, deleteStudentSaga);
   yield takeEvery(
     _studentClassActions.TRANSFER_STUDENT_CLASS,
     transferStudentClassSaga
@@ -33,6 +35,7 @@ function* _rootSaga() {
     getScoreByStudentIdSaga
   );
   yield takeEvery(_scoreActions.SAVE_SCORE_STUDENT, saveScoreStudentSaga);
+  yield takeLatest(_scoreActions.ADD_SCORE_BEGIN, addScoreBeginSaga);
 }
 
 export default _rootSaga;

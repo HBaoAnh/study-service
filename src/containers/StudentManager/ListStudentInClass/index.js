@@ -24,7 +24,7 @@ const ListStudentInClass = (props) => {
     return xhtml;
   };
   return (
-    <table className="table table-hover">
+    <table className="table table-hover table-bordered">
       <thead>
         <tr>
           <th>Stt</th>
@@ -32,7 +32,6 @@ const ListStudentInClass = (props) => {
           <th>Birthday</th>
           <th>Gender</th>
           <th>HomeTown</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>{renderStudent()}</tbody>

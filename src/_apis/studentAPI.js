@@ -27,6 +27,6 @@ export const saveStudentAPI = (data) => {
  * @param {number} id 
  * @returns 
  */
-export const deleteStudentAPI = (id) => {
-  return axiosService.delete(`${LIST_URL.DELETE_STUDENT}/${id}`);
+export const deleteStudentAPI = (data) => {
+  return axiosService.delete(`${LIST_URL.DELETE_STUDENT}/${data.studentId}`);
 };

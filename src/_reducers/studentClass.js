@@ -13,14 +13,13 @@ const reducer = (state = initialState, action) => {
         listStudentclass: [],
       };
     }
-
-    case _typeActions.GET_STUDENT_CLASS_SUC:
+    case _typeActions.GET_STUDENT_CLASS_SUC: {
       const { data } = action.payload;
       return {
         ...state,
         listStudentclass: data,
       };
-
+    }
     case _typeActions.SET_STUDENT_CLASS_EDITING: {
       const { dataEditing } = action.payload;
       return {
@@ -28,7 +27,15 @@ const reducer = (state = initialState, action) => {
         studentEditing: new StudentClassModel(dataEditing),
       };
     }
-
+    case _typeActions.DELETE_STUDENT_CLASS_SUC: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        listStudentclass: state.listStudentclass.filter(
+          (o) => o.studentId !== data.studentId
+        ),
+      };
+    }
     case _typeActions.SAVE_STUDENT_CLASS:
       return {
         ...state,
@@ -51,21 +58,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         listStudentclass,
-      };
-    }
-
-    case _typeActions.DELETE_STUDENT_CLASS: {
-      return {
-        ...state,
-      };
-    }
-    case _typeActions.DELETE_STUDENT_CLASS_SUC: {
-      return {
-        ...state,
-        listStudentclass: state.listStudentclass.filter(
-          (o) => o.id !== action.payload.id
-        ),
-        studentEditing: new StudentClassModel(),
       };
     }
     case _typeActions.TRANSFER_STUDENT_CLASS: {

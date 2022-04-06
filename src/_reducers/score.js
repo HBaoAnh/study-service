@@ -22,7 +22,6 @@ const reducer = (state = initialState, action) => {
     }
     case _typeActions.SET_SCORE_EDITING: {
       const { dataEditing } = action.payload;
-      console.log(dataEditing);
       return {
         ...state,
         scoreEditing: new ScoreModel(dataEditing),
@@ -45,6 +44,21 @@ const reducer = (state = initialState, action) => {
           }
           return o;
         }),
+      };
+    }
+
+    case _typeActions.ADD_SCORE_BEGIN: {
+      return {
+        ...state,
+        scores: [],
+      };
+    }
+
+    case _typeActions.ADD_SCORE_BEGIN_SUC: {
+      const { data } = action.payload;
+      return {
+        ...state,
+        scores: data,
       };
     }
     default:

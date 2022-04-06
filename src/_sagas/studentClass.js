@@ -5,13 +5,11 @@ import {
   transferStudentClassAPI,
   getStudentClassAPI,
   saveStudentClassAPI,
-  deleteStudentClassAPI,
 } from "../_apis/studenClassAPI";
 import {
   getStudentClassSuc,
   transferStudentClassSuccess,
   saveStudentClassSuccess,
-  deleteStudentClassSuccess,
 } from "../_actions/studentClass";
 import { hideModal, hideModalTransfer } from "../_actions/modalForm";
 
@@ -32,21 +30,10 @@ export function* saveStudentClassSaga({ payload }) {
   const { data, status } = resp;
   if (status === STATUS_CODE.SUCCESS) {
     const isAdd = payload.id === 0;
+    yield put(saveStudentClassSuccess(data.data, isAdd));
     if (!isAdd) {
       yield put(hideModal());
     }
-    yield put(saveStudentClassSuccess(data.data, isAdd));
-  }
-  yield delay(1000);
-  yield put(hideLoading());
-}
-
-export function* deleteStudentClassSaga({ payload }) {
-  yield put(showLoading());
-  const resp = yield call(deleteStudentClassAPI, payload);
-  if (resp.status === STATUS_CODE.DELETE) {
-    yield put(deleteStudentClassSuccess(payload.id));
-    yield put(hideModal());
   }
   yield delay(1000);
   yield put(hideLoading());
@@ -55,8 +42,8 @@ export function* deleteStudentClassSaga({ payload }) {
 export function* transferStudentClassSaga({ payload }) {
   yield put(showLoading());
   const resp = yield call(transferStudentClassAPI, payload);
-  const { status: statusCode, data } = resp;
-  if (statusCode) {
+  const { status, data } = resp;
+  if (status) {
     yield put(transferStudentClassSuccess(data.data));
     yield put(hideModalTransfer());
   }
