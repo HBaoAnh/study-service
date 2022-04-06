@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getListSchoolAPI } from "../../_apis/yearAPI";
+import { getListYearAPI } from "../../_apis/yearAPI";
 import { withStyles } from "@mui/styles";
 import styles from "./styles";
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -18,7 +18,7 @@ const YearSelect = ({ classes, onChange }) => {
   }, []);
 
   const getData = async () => {
-    const { data, status } = await getListSchoolAPI();
+    const { data, status } = await getListYearAPI();
     if (status === 200) {
       setList(data.data);
       if (data.data.length > 0) {
@@ -46,7 +46,7 @@ const YearSelect = ({ classes, onChange }) => {
       xhtml = list.map((o) => {
         return (
           <option key={o.id} value={o.id}>
-            {o.fromYear} - {o.toYear}
+            Năm: {o.fromYear}-{o.toYear}
           </option>
         );
       });
@@ -55,12 +55,9 @@ const YearSelect = ({ classes, onChange }) => {
   };
   return (
     <div className={classes.selectControl}>
-      <b>
-        Năm học:
-        <select style={{ padding: "10px" }} value={id} onChange={handleChange}>
+        <select style={{ padding: "5px" }} value={id} onChange={handleChange}>
           {renderOptions()}
         </select>
-      </b>
     </div>
   );
 };

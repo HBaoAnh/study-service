@@ -7,3 +7,11 @@ export const showModal = () => ({
 export const hideModal = () => ({
   type: _TypesModal.HIDE_MODAL,
 });
+
+export const showModalTransfer = () => ({
+  type: _TypesModal.SHOW_MODAL_TRANSFER,
+});
+
+export const hideModalTransfer = () => ({
+  type: _TypesModal.HIDE_MODAL_TRANSFER,
+});

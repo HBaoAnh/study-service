@@ -6,10 +6,11 @@ const LIST_URL = {
   GET_BY_YEAR_CLASS: `${BASE_URL}/getByYearClass`,
   SAVE_STUDENT_CLASS: `${BASE_URL}/saveStudentClass`,
   DELETE_STUDENT_CLASS: `${BASE_URL}/deleteStudentClass`,
+  TRANSFER_STUDENT_CLASS: `${BASE_URL}/transferStudentClass`,
 };
 /**
  * Hàm lấy dữ liệu theo năm học và lớp
- * @param {number} yearId : mã năm học
+ * @param {number} yearId  mã năm học
  * @param {number} classId  mã lớp học
  * @returns
  */
@@ -31,6 +32,10 @@ export const saveStudentClassAPI = (data) => {
  */
 export const deleteStudentClassAPI = (data) => {
   return axiosService.delete(
-    `${LIST_URL.DELETE_STUDENT_CLASS}/${data.id}/${data.studentId}`
+    `${LIST_URL.DELETE_STUDENT_CLASS}/${data.studentId}`
   );
+};
+
+export const transferStudentClassAPI = (dataTransfer) => {
+  return axiosService.post(`${LIST_URL.TRANSFER_STUDENT_CLASS}`, dataTransfer);
 };

@@ -1,6 +1,5 @@
 import * as _typeActions from "../_constants/studentclass";
 
-
 export const getStudentClass = (yearId, classId) => {
   return {
     type: _typeActions.GET_STUDENT_CLASS,
@@ -54,6 +53,22 @@ export const deleteStudentClassSuccess = (id) => {
     type: _typeActions.DELETE_STUDENT_CLASS_SUC,
     payload: {
       id,
+    },
+  };
+};
+
+export const transferStudentClass = (dataTransfer) => {
+  return {
+    type: _typeActions.TRANSFER_STUDENT_CLASS,
+    payload: dataTransfer,
+  };
+};
+
+export const transferStudentClassSuccess = (data) => {
+  return {
+    type: _typeActions.TRANSFER_STUDENT_CLASS_SUC,
+    payload: {
+      data,
     },
   };
 };

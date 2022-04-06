@@ -1,2 +1,4 @@
-export const SHOW_MODAL = 'SHOW_MODAL';
-export const HIDE_MODAL = 'HIDE_MODAL';
+export const SHOW_MODAL = "SHOW_MODAL";
+export const HIDE_MODAL = "HIDE_MODAL";
+export const SHOW_MODAL_TRANSFER = "SHOW_MODAL_TRANSFER";
+export const HIDE_MODAL_TRANSFER = "HIDE_MODAL_TRANSFER";

@@ -46,7 +46,7 @@ const ClassSelect = ({ onChange, classes }) => {
       xhtml = list.map((o) => {
         return (
           <option key={o.id} value={o.id}>
-            {o.name} - {o.grade}
+            Lớp: {o.name}
           </option>
         );
       });
@@ -55,12 +55,9 @@ const ClassSelect = ({ onChange, classes }) => {
   };
   return (
     <div className={classes.selectControl}>
-      <b>
-        Lớp học:
-        <select style={{ padding: "10px" }} value={id} onChange={handleChange}>
-          {renderOptions()}
-        </select>
-      </b>
+      <select style={{ padding: "5px" }} value={id} onChange={handleChange}>
+        {renderOptions()}
+      </select>
     </div>
   );
 };

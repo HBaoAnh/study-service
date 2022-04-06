@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+// import React, { useEffect, useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { reduxForm } from "redux-form";
@@ -10,75 +11,55 @@ import DangerousIcon from "@mui/icons-material/Dangerous";
 import { Field } from "redux-form";
 import renderTextField from "../../../Shares/FormHelper/TextField";
 import renderSelectField from "../../../Shares/FormHelper/SelectField";
-import { getListClassAPI } from "../../../_apis/classAPI";
+import { validateHocSinh } from "../../../Shares/FormHelper/validate";
 
 const FormStudentClass = (props) => {
   const {
     classes,
     open,
-    onSubmit,
+    onHandleSubmit,
+    onHandleDelete,
     handleSubmit,
     initialValues,
     submitting,
-    pristine,
+    invalid,
     reset,
   } = props;
-  const [listClass, setListClass] = useState([]);
-
-  const getData = async () => {
-    const { data, status } = await getListClassAPI();
-    if (status === 200) {
-      setListClass(data.data);
-    } else {
-      setListClass([]);
-    }
-  };
-
-  useEffect(() => {
-    getData();
-    return () => {
-      setListClass([]);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   const dispatch = useDispatch();
 
   const onHandleClose = () => {
     dispatch(_formActions.hideModal());
   };
-  const onHandleSubmit = (data) => {
-    onSubmit(data);
-  };
 
-  const renderOptions = () => {
+  const renderbtnClearData = () => {
     let xhtml = null;
-    if (listClass.length > 0) {
-      xhtml = listClass.map((o) => {
-        return (
-          <MenuItem key={o.id} value={o.id}>
-            {o.name} - {o.grade}
-          </MenuItem>
-        );
-      });
-    }
-    return xhtml;
-  };
-
-  const renderSelectClass = () => {
-    let xhtml = null;
-    if (initialValues.id !== 0) {
+    if (initialValues.studentId === 0) {
       xhtml = (
-        <Grid item md={12} className={classes.input}>
-          <Field label="classId" name="classId" component={renderSelectField}>
-            {renderOptions()}
-          </Field>
-        </Grid>
+        <Button
+          style={{ marginRight: 10 }}
+          variant="contained"
+          disabled={invalid || submitting}
+          onClick={reset}
+        >
+          Xoá dữ liệu
+        </Button>
+      );
+    } else {
+      xhtml = xhtml = (
+        <Button
+          style={{ marginRight: 10 }}
+          variant="contained"
+          color="error"
+          onClick={() => onHandleDelete(initialValues)}
+        >
+          Xoá
+        </Button>
       );
     }
     return xhtml;
   };
   return (
-    <Modal  open={open}>
+    <Modal open={open}>
       <div className={classes.modalContainers}>
         <div className={classes.modalHead}>
           <span className={classes.title}>
@@ -95,7 +76,7 @@ const FormStudentClass = (props) => {
         <div className={classes.modalContent}>
           <form onSubmit={handleSubmit(onHandleSubmit)}>
             <Grid container spacing={2}>
-              {renderSelectClass()}
+              {/* {renderSelectClass()} */}
               <Grid item md={12} className={classes.input}>
                 <Field
                   fullWidth
@@ -142,16 +123,17 @@ const FormStudentClass = (props) => {
               <Grid item md={12} className={classes.input}>
                 <Box display="flex" flexDirection="row-reverse" mt={2}>
                   <Button
-                    disabled={pristine || submitting}
                     variant="contained"
                     style={{ float: "right" }}
-                    onClick={reset}
+                    onClick={onHandleClose}
                   >
-                    Xoá Dữ liệu
+                    Thoát
                   </Button>
+
                   <Box mr={1}>
+                    {renderbtnClearData()}
                     <Button
-                      disabled={pristine || submitting}
+                      disabled={invalid || submitting}
                       variant="contained"
                       type="submit"
                     >
@@ -175,5 +157,6 @@ FormStudentClass.propTypes = {
 
 const ReduxForm = reduxForm({
   form: "FORM_STUDENT_CLASS",
+  validate: validateHocSinh,
 });
 export default withStyles(styles)(ReduxForm(FormStudentClass));

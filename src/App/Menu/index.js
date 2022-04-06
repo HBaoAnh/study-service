@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom"; 
+import { Link } from "react-router-dom";
 
 const Menu = () => {
   return (
@@ -11,7 +11,7 @@ const Menu = () => {
           </Link>
         </div>
         <ul className="nav navbar-nav">
-          <li >
+          <li>
             <Link to="/">Trang Chủ</Link>
           </li>
           <li className="dropdown">
@@ -32,6 +32,9 @@ const Menu = () => {
           </li>
           <li>
             <Link to="student-manager">Quản Lý HS</Link>
+          </li>
+          <li>
+            <Link to="/score-manager">Quản Lý Điểm</Link>
           </li>
         </ul>
         <ul className="nav navbar-nav navbar-right">

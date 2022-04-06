@@ -51,7 +51,6 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         listStudentclass,
-        studentEditing: new StudentClassModel(),
       };
     }
 
@@ -67,6 +66,25 @@ const reducer = (state = initialState, action) => {
           (o) => o.id !== action.payload.id
         ),
         studentEditing: new StudentClassModel(),
+      };
+    }
+    case _typeActions.TRANSFER_STUDENT_CLASS: {
+      return {
+        ...state,
+        studentEditing: new StudentClassModel(),
+      };
+    }
+    case _typeActions.TRANSFER_STUDENT_CLASS_SUC: {
+      const { data } = action.payload;
+      const { listStudentclass } = state;
+      return {
+        ...state,
+        listStudentclass: listStudentclass.map((o) => {
+          if (o.id === data.id) {
+            o = { ...data };
+          }
+          return o;
+        }),
       };
     }
     default:

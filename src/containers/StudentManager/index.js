@@ -8,10 +8,10 @@ import ClassSelect from "../../Shares/ClassSelect";
 import * as _studentClassAction from "../../_actions/studentClass";
 import * as _modalFormAction from "../../_actions/modalForm";
 import FormStudentClass from "./FormStudentClass";
-import { Link } from "react-router-dom";
+import FormTransferClass from "./FormTransferCLass";
 const StudentManager = (props) => {
-  const [yearId, setYearId] = useState("");
-  const [classId, setClassId] = useState("");
+  const [yearId, setYearId] = useState([-1]);
+  const [classId, setClassId] = useState([-1]);
 
   const listStudentClass = useSelector(
     (state) => state.studentClass.listStudentclass
@@ -21,8 +21,8 @@ const StudentManager = (props) => {
   );
 
   const checkOpen = useSelector((state) => state.modalForm.openModal);
+  const openTransfer = useSelector((state) => state.modalForm.openTransfer);
   const dispatch = useDispatch();
-
   useEffect(() => {
     if (yearId && classId) {
       loadData();
@@ -41,6 +41,10 @@ const StudentManager = (props) => {
   const onClassChange = (value) => {
     setClassId(value);
   };
+  /**
+   * Hàm xoá
+   * @param {object} data
+   */
   const handleDelete = (data) => {
     if (confirm(`ban co chac muon xoa ${data.name}`)) {
       const dataDelete = {
@@ -51,6 +55,10 @@ const StudentManager = (props) => {
       dispatch(_studentClassAction.deleteStudentClass(dataDelete));
     }
   };
+  /**
+   * Hàm showDialog thêm và sửa học sinh trong lớp
+   * @param {object} dataEditing listStudent
+   */
   const handleOpenForm = (dataEditing) => {
     dispatch(
       _studentClassAction.setStudentClassEditing(
@@ -59,8 +67,23 @@ const StudentManager = (props) => {
     );
     dispatch(_modalFormAction.showModal());
   };
-
-  const onSubmit = (data) => {
+  /**
+   * Hàm showDialog chuyển lớp cho học sinh
+   * @param {object} dataEditing listStudentClass
+   */
+  const handleTransferClass = (dataEditing) => {
+    dispatch(
+      _studentClassAction.setStudentClassEditing(
+        dataEditing ? dataEditing : null
+      )
+    );
+    dispatch(_modalFormAction.showModalTransfer());
+  };
+  /**
+   * Hàm save student
+   * @param {object} data
+   */
+  const onSaveStudentInClass = (data) => {
     if (data.id === 0) {
       const dataPost = {
         ...data,
@@ -71,6 +94,13 @@ const StudentManager = (props) => {
     } else {
       dispatch(_studentClassAction.saveStudentClass(data));
     }
+  };
+  /**
+   * Hàm Chuyển lớp cho học sinh
+   * @param {object} dataTransfer data khi Submit
+   */
+  const onSubmitTransferClass = (dataTransfer) => {
+    dispatch(_studentClassAction.transferStudentClass(dataTransfer));
   };
   //return //
   return (
@@ -86,14 +116,6 @@ const StudentManager = (props) => {
           <YearSelect onChange={(s) => onYearChange(s)} />
           <ClassSelect onChange={(s) => onClassChange(s)} />
           <div style={{ display: "inline-block", float: "right" }}>
-            <Link
-              to="/transfer-class"
-              type="button"
-              className="btn btn-primary"
-            >
-              Xếp Lớp
-            </Link>
-            &nbsp;
             <button
               type="button"
               className="btn btn-primary"
@@ -109,8 +131,8 @@ const StudentManager = (props) => {
             <div className="panel-body">
               <ListStudentInClass
                 listStudentClass={listStudentClass}
-                onHandleEdit={handleOpenForm}
-                onHandleDelete={handleDelete}
+                handleSelectStudent={handleOpenForm}
+                handleTransferClass={handleTransferClass}
               />
             </div>
           </div>
@@ -125,8 +147,16 @@ const StudentManager = (props) => {
             {checkOpen ? (
               <FormStudentClass
                 open={checkOpen}
-                onSubmit={(_data) => onSubmit(_data)}
+                onHandleSubmit={(_data) => onSaveStudentInClass(_data)}
+                onHandleDelete={(_data) => handleDelete(_data)}
                 initialValues={studentEditing}
+              />
+            ) : null}
+            {openTransfer ? (
+              <FormTransferClass
+                openTransfer={openTransfer}
+                initialValues={studentEditing}
+                onHandleSubmit={onSubmitTransferClass}
               />
             ) : null}
           </div>
