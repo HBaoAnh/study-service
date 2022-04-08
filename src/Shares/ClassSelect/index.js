@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getListClassAPI } from "../../_apis/classAPI";
+import { getAllClassAPI } from "../../_apis/classAPI";
 import { withStyles } from "@mui/styles";
 import styles from "./styles";
+import { Select } from "antd";
 ///////////////////////////////////////////////////////
+const { Option } = Select;
 
 const ClassSelect = ({ onChange, classes }) => {
   const [id, setId] = useState();
@@ -18,7 +20,7 @@ const ClassSelect = ({ onChange, classes }) => {
   }, []);
 
   const getData = async () => {
-    const { data, status } = await getListClassAPI();
+    const { data, status } = await getAllClassAPI();
     if (status === 200) {
       setList(data.data);
       if (data.data.length > 0) {
@@ -32,11 +34,10 @@ const ClassSelect = ({ onChange, classes }) => {
     }
   };
 
-  const handleChange = (e) => {
-    const target = e.target;
-    setId(target.value);
+  const handleChange = (value) => {
+    setId(value);
     if (onChange) {
-      onChange(target.value);
+      onChange(value);
     }
   };
 
@@ -45,9 +46,9 @@ const ClassSelect = ({ onChange, classes }) => {
     if (list.length > 0) {
       xhtml = list.map((o) => {
         return (
-          <option key={o.id} value={o.id}>
-            Lớp: {o.name}
-          </option>
+          <Option key={o.id} value={o.id}>
+            {o.name}
+          </Option>
         );
       });
     }
@@ -55,9 +56,13 @@ const ClassSelect = ({ onChange, classes }) => {
   };
   return (
     <div className={classes.selectControl}>
-      <select style={{ padding: "5px" }} value={id} onChange={handleChange}>
+      <Select
+        value={id}
+        style={{ padding: "5px", marginRight: "10px" }}
+        onChange={handleChange}
+      >
         {renderOptions()}
-      </select>
+      </Select>
     </div>
   );
 };

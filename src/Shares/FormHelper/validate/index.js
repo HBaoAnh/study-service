@@ -1,10 +1,13 @@
-export const validateHocSinh = (values) => {
+export const validateStudent = (values) => {
   const errors = {};
-  const { name } = values;
+  const { name, birthday } = values;
   if (!name) {
-    errors.name = "vui long nhap ho ten hoc sinh";
+    errors.name = "Required";
   } else if (name.trim() && name.length < 5) {
     errors.name = "ho ten hoc sinh phai co tu 5 ky tu tro len";
+  }
+  if (!birthday) {
+    errors.birthday = "Required";
   }
   return errors;
 };
@@ -18,11 +21,13 @@ export const validateLopHoc = (values) => {
   return errors;
 };
 
-export const validateNamHoc = (values) => {
+export const validateYear = (values) => {
   const errors = {};
-  const { name } = values;
-  if (!name) {
-    errors.name = "vui lòng nhập tên năm học";
+  if (!values.fromYear) {
+    errors.fromYear = "Required";
+  }
+  if (!values.toYear) {
+    errors.toYear = "Required";
   }
   return errors;
 };

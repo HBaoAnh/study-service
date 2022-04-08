@@ -3,7 +3,7 @@ import { API_ENDPOINT } from "../_constants";
 
 const BASE_URL = `${API_ENDPOINT}/api/v1/Year`;
 const LIST_URL = {
-  GET_LIST_YEAR: `${BASE_URL}/getAllYear`,
+  GET_ALL_YEAR: `${BASE_URL}/getAllYear`,
   SAVE_YEAR: `${BASE_URL}/saveYear`,
   DELETE_YEAR: `${BASE_URL}/deleteYear`,
 };
@@ -11,8 +11,8 @@ const LIST_URL = {
  * Hàm lấy tất cả dữ liệu
  * @returns
  */
-export const getListYearAPI = () => {
-  return axiosService.get(`${LIST_URL.GET_LIST_YEAR}`);
+export const getAllYearAPI = () => {
+  return axiosService.get(`${LIST_URL.GET_ALL_YEAR}`);
 };
 /**
  * Hàm Lưu dữ liệu data
@@ -27,6 +27,6 @@ export const saveYearAPI = (data) => {
  * @param {number} id
  * @returns
  */
-export const deleteYearAPI = (id) => {
-  return axiosService.delete(`${LIST_URL.DELETE_YEAR}/${id}`);
+export const deleteYearAPI = (yearId) => {
+  return axiosService.delete(`${LIST_URL.DELETE_YEAR}/${yearId}`);
 };

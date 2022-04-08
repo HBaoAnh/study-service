@@ -11,7 +11,7 @@ const LIST_URL = {
  * Hàm lấy tất cả dữ liệU
  * @returns 
  */
-export const getListClassAPI = () => {
+export const getAllClassAPI = () => {
   return axiosService.get(`${LIST_URL.GET_LIST_CLASS}`);
 };
 /**

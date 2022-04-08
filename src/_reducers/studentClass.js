@@ -63,7 +63,6 @@ const reducer = (state = initialState, action) => {
     case _typeActions.TRANSFER_STUDENT_CLASS: {
       return {
         ...state,
-        studentEditing: new StudentClassModel(),
       };
     }
     case _typeActions.TRANSFER_STUDENT_CLASS_SUC: {

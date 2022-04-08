@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { withStyles } from "@mui/styles";
-import styles from "./styles";
-import { Button, Grid, MenuItem, Modal } from "@mui/material";
-import DangerousIcon from "@mui/icons-material/Dangerous";
 import { useDispatch } from "react-redux";
 import * as _formActions from "../../../_actions/modalForm";
-import { Field } from "redux-form";
-import renderTextField from "../../../Shares/FormHelper/TextField";
-import { Box } from "@mui/system";
-import { reduxForm } from "redux-form";
-import renderSelectField from "../../../Shares/FormHelper/SelectField";
-import { getListClassAPI } from "../../../_apis/classAPI";
-import { getListYearAPI } from "../../../_apis/yearAPI";
+import { reduxForm, Field } from "redux-form";
+import { getAllClassAPI } from "../../../_apis/classAPI";
+import { getAllYearAPI } from "../../../_apis/yearAPI";
+import { Button, Modal, Input, Select, Form } from "antd";
+import helpField from "../../../Shares/HelpField";
 
-const FormTransferClass = (props) => {
-  const { classes, openTransfer, handleSubmit, onHandleSubmit } = props;
-  const [listClass, setListClass] = useState([]);
+const { Option } = Select;
+
+const FormItem = Form.Item;
+const renderInput = helpField(Input);
+const renderSelect = helpField(Select);
+
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 14,
+      offset: 6,
+    },
+  },
+};
+let FormTransferClass = (props) => {
+  const { openTransfer, handleSubmit, onHandleSubmit } = props;
+  const [yearId, setyearId] = useState();
   const [listYear, setListYear] = useState([]);
+  const [classId, setclassId] = useState();
+  const [listClass, setListClass] = useState([]);
   const dispatch = useDispatch();
-
   /**
    * Hàm Hiển thị Year và Class 1 lần khi mở form
    */
@@ -31,12 +44,11 @@ const FormTransferClass = (props) => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   /**
    * Hàm get Class trực tiếp từ API
    */
   const getClassData = async () => {
-    const { data, status } = await getListClassAPI();
+    const { data, status } = await getAllClassAPI();
     if (status === 200) {
       setListClass(data.data);
     } else {
@@ -47,12 +59,19 @@ const FormTransferClass = (props) => {
    * Hàm get Year trực tiếp từ API
    */
   const getYearData = async () => {
-    const { data, status } = await getListYearAPI();
+    const { data, status } = await getAllYearAPI();
     if (status === 200) {
       setListYear(data.data);
     } else {
       setListYear([]);
     }
+  };
+
+  const handleYearChange = (value) => {
+    setyearId(value);
+  };
+  const handleClassChange = (value) => {
+    setclassId(value);
   };
   /**
    * Hàm đóng form
@@ -60,7 +79,6 @@ const FormTransferClass = (props) => {
   const onHandleClose = () => {
     dispatch(_formActions.hideModalTransfer());
   };
-
   /**
    * Hàm render MenuItem Year của SelectYear
    * @returns MenuItem  Year
@@ -70,9 +88,9 @@ const FormTransferClass = (props) => {
     if (listYear.length > 0) {
       xhtml = listYear.map((o) => {
         return (
-          <MenuItem key={o.id} value={o.id}>
+          <Option key={o.id} value={o.id}>
             {o.fromYear}- {o.toYear}
-          </MenuItem>
+          </Option>
         );
       });
     }
@@ -87,82 +105,58 @@ const FormTransferClass = (props) => {
     if (listClass.length > 0) {
       xhtml = listClass.map((o) => {
         return (
-          <MenuItem key={o.id} value={o.id}>
+          <Option key={o.id} value={o.id}>
             {o.name} - {o.grade}
-          </MenuItem>
+          </Option>
         );
       });
     }
     return xhtml;
   };
   return (
-    <Modal open={openTransfer}>
-      <div className={classes.modalContainers}>
-        <div className={classes.modalHead}>
-          <span className={classes.title}>Chuyển Lớp Học Sinh</span>
-          <DangerousIcon
-            fontSize="large"
-            className={classes.iconClose}
-            onClick={onHandleClose}
-          />
-        </div>
-        <div className={classes.modalContent}>
-          <form onSubmit={handleSubmit(onHandleSubmit)}>
-            <Grid container spacing={2}>
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  label="Năm Học"
-                  name="yearId"
-                  component={renderSelectField}
-                >
-                  {renderYearOptions()}
-                </Field>
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  label="Lớp Học"
-                  name="classId"
-                  component={renderSelectField}
-                >
-                  {renderClassOptions()}
-                </Field>
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  fullWidth
-                  disabled
-                  label="Họ và Tên"
-                  className={classes.textField}
-                  name="name"
-                  component={renderTextField}
-                />
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Box display="flex" flexDirection="row-reverse" mt={2}>
-                  <Button
-                    variant="contained"
-                    style={{ float: "right" }}
-                    onClick={onHandleClose}
-                  >
-                    Thoát
-                  </Button>
-
-                  <Box mr={1}>
-                    <Button variant="contained" type="submit">
-                      Lưu lại
-                    </Button>
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </div>
+    <Modal
+      visible={openTransfer}
+      title="Title"
+      onOk={handleSubmit(onHandleSubmit)}
+      onCancel={onHandleClose}
+      footer={null}
+    >
+      <Field
+        value={yearId}
+        label="Năm Học"
+        name="yearId"
+        component={renderSelect}
+        onChange={handleYearChange}
+      >
+        {renderYearOptions()}
+      </Field>
+      <Field
+        value={classId}
+        label="Lớp Học"
+        name="classId"
+        component={renderSelect}
+        onChange={handleClassChange}
+      >
+        {renderClassOptions()}
+      </Field>
+      <Field disabled label="Họ và Tên" name="name" component={renderInput} />
+      <FormItem {...tailFormItemLayout}>
+        <Button
+          key="submit"
+          type="primary"
+          onClick={handleSubmit(onHandleSubmit)}
+        >
+          Lưu Lại
+        </Button>
+        <Button key="back" onClick={onHandleClose}>
+          Huỷ Bỏ
+        </Button>
+      </FormItem>
     </Modal>
   );
 };
 
-const ReduxForm = reduxForm({
+FormTransferClass = reduxForm({
   form: "FORM_TRANSFER_CLASS",
-});
-export default withStyles(styles)(ReduxForm(FormTransferClass));
+})(FormTransferClass);
+export default FormTransferClass;

@@ -3,6 +3,7 @@ import * as _TypesModal from "../_constants/modalForm";
 const initialState = {
   openModal: false,
   openTransfer: false,
+  isOpenYear: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -29,6 +30,18 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         openTransfer: false,
+      };
+
+    case _TypesModal.SHOW_MODAL_YEAR:
+      return {
+        ...state,
+        isOpenYear: true,
+      };
+
+    case _TypesModal.HIDE_MODAL_YEAR:
+      return {
+        ...state,
+        isOpenYear: false,
       };
 
     default:

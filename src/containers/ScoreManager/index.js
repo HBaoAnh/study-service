@@ -12,8 +12,8 @@ import FormScore from "./FormScore";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 
 const ScoreManager = (props) => {
-  const [yearId, setYearId] = useState([-1]);
-  const [classId, setClassId] = useState([-1]);
+  const [yearId, setYearId] = useState([0]);
+  const [classId, setClassId] = useState([0]);
   const [stuId, setStuId] = useState();
   const listStudent = useSelector(
     (state) => state.studentClass.listStudentclass
@@ -93,51 +93,48 @@ const ScoreManager = (props) => {
     }
   };
   return (
+    <div className="container">
       <div className="row">
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
           <h1 style={{ textAlign: "center", fontWeight: "bold" }}>
             Quản Lý Điểm Của Học Sinh
           </h1>
         </div>
-          <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-            <YearSelect onChange={(s) => onYearChange(s)} />
-            <ClassSelect onChange={(s) => onClassChange(s)} />
-            <div className="panel panel-primary">
-              <div className="panel-heading">
-                <h3 className="panel-title">DANH SÁCH HỌC SINH</h3>
-              </div>
-              <div className="panel-body">
-                {/* danh sach hoc sinh */}
-                <ListStudent
-                  listStudent={listStudent}
-                  onHandleStudent={(dataHandle) => handleStudent(dataHandle)}
-                />
-              </div>
+        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+          <YearSelect onChange={(s) => onYearChange(s)} />
+          <ClassSelect onChange={(s) => onClassChange(s)} />
+          <div className="card">
+            <div className="card-header">DANH SÁCH HỌC SINH</div>
+            <div className="card-body">
+              {/* danh sach hoc sinh */}
+              <ListStudent
+                listStudent={listStudent}
+                onHandleStudent={(dataHandle) => handleStudent(dataHandle)}
+              />
             </div>
           </div>
-          <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-            {/* button add score */}
-            <button
-              style={{ marginBottom: "8px" }}
-              type="button"
-              className="btn btn-sm btn-primary"
-              onClick={handleAddScore}
-            >
-              <AutorenewIcon />
-            </button>
-            <div className="panel panel-primary">
-              <div className="panel-heading">
-                <h3 className="panel-title">BẢNG ĐIỂM</h3>
-              </div>
-              <div className="panel-body">
-                {/* danh sach diem */}
-                <ListScore
-                  scores={scores}
-                  onHandleOpenForm={(_dataEdit) => handleOpenForm(_dataEdit)}
-                />
-              </div>
+        </div>
+        <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+          {/* button add score */}
+          <button
+            style={{ marginBottom: "8px" }}
+            type="button"
+            className="btn btn-sm btn-primary"
+            onClick={handleAddScore}
+          >
+            <AutorenewIcon />
+          </button>
+          <div className="card">
+            <div className="card-header">BẢNG ĐIỂM</div>
+            <div className="card-body">
+              {/* danh sach diem */}
+              <ListScore
+                scores={scores}
+                onHandleOpenForm={(_dataEdit) => handleOpenForm(_dataEdit)}
+              />
             </div>
           </div>
+        </div>
         {openForm ? (
           <FormScore
             openForm={openForm}
@@ -146,6 +143,7 @@ const ScoreManager = (props) => {
           />
         ) : null}
       </div>
+    </div>
   );
 };
 

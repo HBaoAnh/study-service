@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+import * as moment from "moment";
 
 const ItemStudent = ({
   student,
@@ -17,14 +18,9 @@ const ItemStudent = ({
     >
       <td>{index + 1}</td>
       <td>{name}</td>
-      <td>{birth.toLocaleDateString()}</td>
+      <td>{moment(birth).calendar()}</td>
       <td>{gender ? "Nam" : "Nữ"}</td>
       <td>{homeTown}</td>
-      {/* <td>
-        <button type="button" className="btn btn-xs btn-success">
-          Chuyển Lớp
-        </button>
-      </td> */}
     </tr>
   );
 };

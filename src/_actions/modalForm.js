@@ -8,6 +8,13 @@ export const hideModal = () => ({
   type: _TypesModal.HIDE_MODAL,
 });
 
+export const showModalYear = () => ({
+  type: _TypesModal.SHOW_MODAL_YEAR,
+});
+
+export const hideModalYear = () => ({
+  type: _TypesModal.HIDE_MODAL_YEAR,
+});
 export const showModalTransfer = () => ({
   type: _TypesModal.SHOW_MODAL_TRANSFER,
 });

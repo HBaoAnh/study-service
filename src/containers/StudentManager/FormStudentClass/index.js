@@ -1,28 +1,44 @@
-// import React, { useEffect, useState } from "react";
 import React from "react";
 import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
-import { reduxForm } from "redux-form";
+import { reduxForm, Field } from "redux-form";
 import * as _formActions from "../../../_actions/modalForm";
-import { Box, Button, Grid, MenuItem, Modal } from "@mui/material";
-import { withStyles } from "@mui/styles";
-import styles from "./styles";
-import DangerousIcon from "@mui/icons-material/Dangerous";
-import { Field } from "redux-form";
-import renderTextField from "../../../Shares/FormHelper/TextField";
-import renderSelectField from "../../../Shares/FormHelper/SelectField";
-import { validateHocSinh } from "../../../Shares/FormHelper/validate";
+import { validateStudent } from "../../../Shares/FormHelper/validate";
+import { Button, Modal, Input, DatePicker, Form, Radio } from "antd";
+import helpField from "../../../Shares/HelpField";
 
-const FormStudentClass = (props) => {
+const FormItem = Form.Item;
+const RadioGroup = Radio.Group;
+const { TextArea } = Input;
+
+const renderInput = helpField(Input);
+const renderDatePicker = helpField(DatePicker);
+const renderRadioGroup = helpField(RadioGroup);
+const renderTextArea = helpField(TextArea);
+
+const tailFormItemLayout = {
+  wrapperCol: {
+    xs: {
+      span: 24,
+      offset: 0,
+    },
+    sm: {
+      span: 14,
+      offset: 6,
+    },
+  },
+};
+
+let FormStudentClass = (props) => {
   const {
-    classes,
     open,
     onHandleSubmit,
     onHandleDelete,
     handleSubmit,
     initialValues,
-    submitting,
     invalid,
+    submitting,
+    pristine,
     reset,
   } = props;
   const dispatch = useDispatch();
@@ -32,125 +48,76 @@ const FormStudentClass = (props) => {
   const onHandleClose = () => {
     dispatch(_formActions.hideModal());
   };
-  /**
-   * Hàm render button xoá
-   * @returns button
-   */
-  const renderbtnClearData = () => {
-    let xhtml = null;
-    if (initialValues.studentId === 0) {
-      xhtml = (
-        <Button
-          style={{ marginRight: 10 }}
-          variant="contained"
-          disabled={invalid || submitting}
-          onClick={reset}
-        >
-          Xoá dữ liệu
-        </Button>
-      );
-    } else {
-      xhtml = xhtml = (
-        <Button
-          style={{ marginRight: 10 }}
-          variant="contained"
-          color="error"
-          onClick={() => onHandleDelete(initialValues)}
-        >
-          Xoá
-        </Button>
-      );
-    }
-    return xhtml;
-  };
   return (
-    <Modal open={open}>
-      <div className={classes.modalContainers}>
-        <div className={classes.modalHead}>
-          <span className={classes.title}>
-            {initialValues.id === 0
-              ? "Thêm học sinh vào Lớp"
-              : "Cập nhập Học Sinh"}
-          </span>
-          <DangerousIcon
-            fontSize="large"
-            className={classes.iconClose}
-            onClick={onHandleClose}
-          />
-        </div>
-        <div className={classes.modalContent}>
-          <form onSubmit={handleSubmit(onHandleSubmit)}>
-            <Grid container spacing={2}>
-              {/* {renderSelectClass()} */}
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  fullWidth
-                  id="name"
-                  label="Họ và Tên"
-                  className={classes.textField}
-                  name="name"
-                  component={renderTextField}
-                />
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  fullWidth
-                  id="birthday"
-                  label="Ngày Sinh"
-                  className={classes.textField}
-                  name="birthday"
-                  component={renderTextField}
-                />
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  fullWidth
-                  id="gender"
-                  label="Giới Tính"
-                  className={classes.selectField}
-                  name="gender"
-                  component={renderSelectField}
-                >
-                  <MenuItem value={true}>Nam</MenuItem>
-                  <MenuItem value={false}>NỮ</MenuItem>
-                </Field>
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Field
-                  fullWidth
-                  id="homeTown"
-                  label="Nơi Sinh"
-                  className={classes.textField}
-                  name="homeTown"
-                  component={renderTextField}
-                />
-              </Grid>
-              <Grid item md={12} className={classes.input}>
-                <Box display="flex" flexDirection="row-reverse" mt={2}>
-                  <Button
-                    variant="contained"
-                    style={{ float: "right" }}
-                    onClick={onHandleClose}
-                  >
-                    Thoát
-                  </Button>
+    <Modal
+      visible={open}
+      title="Title"
+      onOk={handleSubmit(onHandleSubmit)}
+      onCancel={onHandleClose}
+      footer={null}
+    >
+      <Form>
+        <Field
+          id="name"
+          placeholder="Họ và Tên"
+          label="Họ và Tên"
+          name="name"
+          component={renderInput}
+        />
+        <Field
+          placeholder="Ngày Sinh"
+          label="Ngày Sinh"
+          name="birthday"
+          component={renderDatePicker}
+          onFocus={(e) => e.preventDefault()}
+          onBlur={(e) => e.preventDefault()}
+        />
+        <Field
+          id="gender"
+          placeholder="Giới Tính"
+          label="Giới Tính"
+          name="gender"
+          component={renderRadioGroup}
+        >
+          <Radio value={true}>Nam</Radio>
+          <Radio value={false}>Nữ</Radio>
+        </Field>
+        <Field
+          id="homeTown"
+          placeholder="Nơi Sinh"
+          label="Nơi Sinh"
+          name="homeTown"
+          component={renderTextArea}
+        />
+        <FormItem {...tailFormItemLayout}>
+          {initialValues.id ? (
+            <Button
+              key="button"
+              type="primary"
+              onClick={() => onHandleDelete(initialValues)}
+            >
+              Xoá
+            </Button>
+          ) : (
+            <Button disabled={pristine || submitting} onClick={reset}>
+              Clear Values
+            </Button>
+          )}
 
-                  <Box mr={1}>
-                    {renderbtnClearData()}
-                    <Button
-                      disabled={invalid || submitting}
-                      variant="contained"
-                      type="submit"
-                    >
-                      Lưu lại
-                    </Button>
-                  </Box>
-                </Box>
-              </Grid>
-            </Grid>
-          </form>
-        </div>
-      </div>
+          <Button
+          style={{margin: "0px 10px"}}
+            disabled={invalid || submitting}
+            key="submit"
+            type="primary"
+            onClick={handleSubmit(onHandleSubmit)}
+          >
+            Lưu lại
+          </Button>
+          <Button key="back" onClick={onHandleClose}>
+            huỷ bỏ
+          </Button>
+        </FormItem>
+      </Form>
     </Modal>
   );
 };
@@ -160,8 +127,9 @@ FormStudentClass.propTypes = {
   open: PropTypes.bool,
 };
 
-const ReduxForm = reduxForm({
+FormStudentClass = reduxForm({
   form: "FORM_STUDENT_CLASS",
-  validate: validateHocSinh,
-});
-export default withStyles(styles)(ReduxForm(FormStudentClass));
+  validate: validateStudent,
+})(FormStudentClass);
+
+export default FormStudentClass;

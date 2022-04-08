@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { getListYearAPI } from "../../_apis/yearAPI";
-import { withStyles } from "@mui/styles";
-import styles from "./styles";
-/////////////////////////////////////////////////////////////////////////////////////////////////////////
+import { Select } from "antd";
+import { getAllYearAPI } from "../../_apis/yearAPI";
+const { Option } = Select;
 
-const YearSelect = ({ classes, onChange }) => {
+const YearSelect = ({ onChange }) => {
   const [id, setId] = useState();
   const [list, setList] = useState([]);
-
+  
   useEffect(() => {
     getData();
     return () => {
@@ -18,7 +17,7 @@ const YearSelect = ({ classes, onChange }) => {
   }, []);
 
   const getData = async () => {
-    const { data, status } = await getListYearAPI();
+    const { data, status } = await getAllYearAPI();
     if (status === 200) {
       setList(data.data);
       if (data.data.length > 0) {
@@ -32,33 +31,34 @@ const YearSelect = ({ classes, onChange }) => {
     }
   };
 
-  const handleChange = (e) => {
-    const target = e.target;
-    setId(target.value);
+  const handleChange = (value) => {
+    setId(value);
     if (onChange) {
-      onChange(target.value);
+      onChange(value);
     }
   };
 
-  const renderOptions = () => {
+  const renOptions = () => {
     let xhtml = null;
     if (list.length > 0) {
       xhtml = list.map((o) => {
         return (
-          <option key={o.id} value={o.id}>
-            Năm: {o.fromYear}-{o.toYear}
-          </option>
+          <Option key={o.id} value={o.id}>
+            {o.fromYear} - {o.toYear}
+          </Option>
         );
       });
     }
     return xhtml;
   };
   return (
-    <div className={classes.selectControl}>
-        <select style={{ padding: "5px" }} value={id} onChange={handleChange}>
-          {renderOptions()}
-        </select>
-    </div>
+    <Select
+      value={id}
+      style={{ width: "120px", marginRight: "10px" }}
+      onChange={handleChange}
+    >
+      {renOptions()}
+    </Select>
   );
 };
 
@@ -66,4 +66,4 @@ YearSelect.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default withStyles(styles)(YearSelect);
+export default YearSelect;

@@ -10,11 +10,17 @@ import {
   saveScoreStudentSaga,
   addScoreBeginSaga,
 } from "./score";
+import { getAllYearSaga, saveYearSaga, deleteYearSaga } from "./year";
 import * as _studentClassActions from "../_constants/studentclass";
 import * as _studentActions from "../_constants/student";
 import * as _scoreActions from "../_constants/score";
+import * as _yearActions from "../_constants/year";
 
 function* _rootSaga() {
+  //Nam hoc
+  yield takeLatest(_yearActions.GET_ALL_YEAR, getAllYearSaga);
+  yield takeEvery(_yearActions.SAVE_YEAR, saveYearSaga);
+  yield takeLatest(_yearActions.DELETE_YEAR, deleteYearSaga);
   //Hoc sinh lop hoc
   yield takeLatest(
     _studentClassActions.GET_STUDENT_CLASS,

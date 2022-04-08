@@ -12,10 +12,10 @@ import FormStudentClass from "./FormStudentClass";
 import FormTransferClass from "./FormTransferCLass";
 
 const StudentManager = (props) => {
-  const [yearId, setYearId] = useState([-1]);
-  const [classId, setClassId] = useState([-1]);
-  const [ltStudent, setLtStudent] = useState();
-  
+  const [yearId, setYearId] = useState([0]);
+  const [classId, setClassId] = useState([0]);
+  const [studentTransfer, setStudentTransfer] = useState();
+
   const listStudentClass = useSelector(
     (state) => state.studentClass.listStudentclass
   );
@@ -70,9 +70,11 @@ const StudentManager = (props) => {
    * @param {object} dataEditing listStudentClass
    */
   const onHandleTransferClass = () => {
-    if (ltStudent) {
+    if (studentTransfer) {
       dispatch(
-        _studentClassAction.setStudentClassEditing(ltStudent ? ltStudent : null)
+        _studentClassAction.setStudentClassEditing(
+          studentTransfer ? studentTransfer : null
+        )
       );
       dispatch(_modalFormAction.showModalTransfer());
     } else {
@@ -84,7 +86,7 @@ const StudentManager = (props) => {
    * @param {object} data
    */
   const handleTransferClass = (dataStudent) => {
-    setLtStudent(dataStudent);
+    setStudentTransfer(dataStudent);
   };
 
   const onSaveStudentInClass = (data) => {
@@ -104,71 +106,72 @@ const StudentManager = (props) => {
    * @param {object} dataTransfer data khi Submit
    */
   const onSubmitTransferClass = (dataTransfer) => {
-    dispatch(_studentClassAction.transferStudentClass(dataTransfer));
+    console.log(dataTransfer);
+    // dispatch(_studentClassAction.transferStudentClass(dataTransfer));
   };
   //return //
   return (
-    <div className="row">
-      <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h1 style={{ textAlign: "center", fontWeight: "bold" }}>
-          Quản Lý Học Sinh
-        </h1>
-      </div>
-      {/* danh sách học sinh theo lớp */}
-      <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <YearSelect onChange={(s) => onYearChange(s)} />
-        <ClassSelect onChange={(s) => onClassChange(s)} />
-        <div style={{ display: "inline-block", float: "right" }}>
-          <button
-            style={{ marginRight: 10 }}
-            className="btn btn-success"
-            onClick={onHandleTransferClass}
-          >
-            Xếp Lớp
-          </button>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleOpenForm}
-          >
-            Thêm HS vào Lớp
-          </button>
+    <div className="container">
+      <div className="row">
+        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <h1 style={{ textAlign: "center", fontWeight: "bold" }}>
+            Quản Lý Học Sinh
+          </h1>
         </div>
-        <div className="panel panel-primary">
-          <div className="panel-heading">
-            <h5>Danh Sách Học Sinh</h5>
+        {/* danh sách học sinh theo lớp */}
+        <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <YearSelect onChange={(s) => onYearChange(s)} />
+          <ClassSelect onChange={(s) => onClassChange(s)} />
+          <div style={{ display: "inline-block", float: "right" }}>
+            <button
+              style={{ marginRight: 10 }}
+              className="btn btn-success"
+              onClick={onHandleTransferClass}
+            >
+              Xếp Lớp
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleOpenForm}
+            >
+              Thêm HS vào Lớp
+            </button>
           </div>
-          <div className="panel-body">
-            <ListStudentInClass
-              listStudentClass={listStudentClass}
-              handleSelectStudent={handleOpenForm}
-              handleTransferClass={handleTransferClass}
-            />
+          <div className="card">
+            <div className="card-header">Danh Sách Học Sinh</div>
+            <div className="card-body">
+              <ListStudentInClass
+                listStudentClass={listStudentClass}
+                handleSelectStudent={handleOpenForm}
+                handleTransferClass={handleTransferClass}
+              />
+            </div>
+            <div
+              style={{
+                left: 0,
+                right: 0,
+                marginRight: "auto",
+                marginLeft: "auto",
+              }}
+            >
+              {checkOpen ? (
+                <FormStudentClass
+                  open={checkOpen}
+                  onHandleSubmit={(_data) => onSaveStudentInClass(_data)}
+                  onHandleDelete={(_data) => handleDelete(_data)}
+                  initialValues={studentEditing}
+                />
+              ) : null}
+              {openTransfer ? (
+                <FormTransferClass
+                  openTransfer={openTransfer}
+                  initialValues={studentEditing}
+                  onHandleSubmit={onSubmitTransferClass}
+                />
+              ) : null}
+            </div>
           </div>
-        </div>
-        <div
-          style={{
-            left: 0,
-            right: 0,
-            marginRight: "auto",
-            marginLeft: "auto",
-          }}
-        >
-          {checkOpen ? (
-            <FormStudentClass
-              open={checkOpen}
-              onHandleSubmit={(_data) => onSaveStudentInClass(_data)}
-              onHandleDelete={(_data) => handleDelete(_data)}
-              initialValues={studentEditing}
-            />
-          ) : null}
-          {openTransfer ? (
-            <FormTransferClass
-              openTransfer={openTransfer}
-              initialValues={studentEditing}
-              onHandleSubmit={onSubmitTransferClass}
-            />
-          ) : null}
         </div>
       </div>
     </div>

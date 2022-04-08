@@ -1,4 +1,4 @@
-class schoolYearModel {
+class YearModel {
   constructor(data) {
     if (!data) {
       data = {};
@@ -9,4 +9,4 @@ class schoolYearModel {
   }
 }
 
-export default schoolYearModel;
+export default YearModel;
