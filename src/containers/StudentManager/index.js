@@ -120,8 +120,11 @@ const StudentManager = (props) => {
         </div>
         {/* danh sách học sinh theo lớp */}
         <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+          <label style={{ margin: "0px 10px" }}>Năm Học :</label>
           <YearSelect onChange={(s) => onYearChange(s)} />
+          <label style={{ margin: "0px 10px" }}>Lớp Học :</label>
           <ClassSelect onChange={(s) => onClassChange(s)} />
+
           <div style={{ display: "inline-block", float: "right" }}>
             <button
               style={{ marginRight: 10 }}
@@ -138,6 +141,7 @@ const StudentManager = (props) => {
               Thêm HS vào Lớp
             </button>
           </div>
+          <hr />
           <div className="card">
             <div className="card-header">Danh Sách Học Sinh</div>
             <div className="card-body">

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { getAllClassAPI } from "../../_apis/classAPI";
-import { withStyles } from "@mui/styles";
-import styles from "./styles";
 import { Select } from "antd";
 ///////////////////////////////////////////////////////
 const { Option } = Select;
@@ -55,15 +53,12 @@ const ClassSelect = ({ onChange, classes }) => {
     return xhtml;
   };
   return (
-    <div className={classes.selectControl}>
       <Select
         value={id}
-        style={{ padding: "5px", marginRight: "10px" }}
         onChange={handleChange}
       >
         {renderOptions()}
       </Select>
-    </div>
   );
 };
 
@@ -71,4 +66,4 @@ ClassSelect.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default withStyles(styles)(ClassSelect);
+export default ClassSelect;

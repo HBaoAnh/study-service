@@ -1,5 +1,6 @@
-import { put, call, delay } from "redux-saga/effects";
+import { put, call, delay, takeEvery, takeLatest } from "redux-saga/effects";
 import { showLoading, hideLoading } from "../_actions/ui";
+import * as _scoreActions from "../_constants/score";
 import { STATUS_CODE } from "../_constants";
 import {
   getScoreByStudentIdAPI,
@@ -13,7 +14,7 @@ import {
 } from "../_actions/score";
 import { hideModal } from "../_actions/modalForm";
 
-export function* getScoreByStudentIdSaga({ payload }) {
+function* getScoreByStudentIdSaga({ payload }) {
   yield put(showLoading());
   const res = yield call(getScoreByStudentIdAPI, payload.data);
   const { status, data } = res;
@@ -24,7 +25,7 @@ export function* getScoreByStudentIdSaga({ payload }) {
   yield put(hideLoading());
 }
 
-export function* saveScoreStudentSaga({ payload }) {
+function* saveScoreStudentSaga({ payload }) {
   yield put(showLoading());
   const res = yield call(saveScoreStudentAPI, payload);
   const { status, data } = res;
@@ -36,7 +37,7 @@ export function* saveScoreStudentSaga({ payload }) {
   yield put(hideLoading());
 }
 
-export function* addScoreBeginSaga({ payload }) {
+function* addScoreBeginSaga({ payload }) {
   yield put(showLoading());
   const res = yield call(addScoreBeginAPI, payload.data);
   const { status, data } = res;
@@ -45,4 +46,13 @@ export function* addScoreBeginSaga({ payload }) {
   }
   yield delay(1000);
   yield put(hideLoading());
+}
+
+export default function* scoreSaga() {
+  yield takeLatest(
+    _scoreActions.GET_SCORE_BY_STUDENT_ID,
+    getScoreByStudentIdSaga
+  );
+  yield takeEvery(_scoreActions.SAVE_SCORE_STUDENT, saveScoreStudentSaga);
+  yield takeLatest(_scoreActions.ADD_SCORE_BEGIN, addScoreBeginSaga);
 }

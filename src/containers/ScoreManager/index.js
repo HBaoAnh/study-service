@@ -100,9 +100,23 @@ const ScoreManager = (props) => {
             Quản Lý Điểm Của Học Sinh
           </h1>
         </div>
-        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+        <div>
+          <label style={{ margin: "0px 10px" }}>Năm Học :</label>
           <YearSelect onChange={(s) => onYearChange(s)} />
+          <label style={{ margin: "0px 10px" }}>Lớp Học :</label>
           <ClassSelect onChange={(s) => onClassChange(s)} />
+          {/* button add score */}
+          <button
+            style={{ float: "right" }}
+            type="button"
+            className="btn btn-sm btn-primary"
+            onClick={handleAddScore}
+          >
+            <AutorenewIcon />
+          </button>
+          <hr />
+        </div>
+        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
           <div className="card">
             <div className="card-header">DANH SÁCH HỌC SINH</div>
             <div className="card-body">
@@ -115,15 +129,6 @@ const ScoreManager = (props) => {
           </div>
         </div>
         <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-          {/* button add score */}
-          <button
-            style={{ marginBottom: "8px" }}
-            type="button"
-            className="btn btn-sm btn-primary"
-            onClick={handleAddScore}
-          >
-            <AutorenewIcon />
-          </button>
           <div className="card">
             <div className="card-header">BẢNG ĐIỂM</div>
             <div className="card-body">

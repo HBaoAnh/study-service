@@ -1,8 +1,11 @@
 import React from "react";
-import { Modal, Button, Row } from "antd";
+import { Form, Modal, Button, Input } from "antd";
 import { Field, reduxForm } from "redux-form";
-import renderTextField from "../../../Shares/FormHelper/TextField";
-import { validateYear } from "../../../Shares/FormHelper/validate";
+import { validateYear } from "../../../Shares/validate";
+import _helpField from "../../../Shares/HelpField";
+
+const FormItem = Form.Item;
+const renderInput = _helpField(Input);
 
 let YearForm = (props) => {
   const {
@@ -17,48 +20,54 @@ let YearForm = (props) => {
   } = props;
   return (
     <Modal
-      title="Năm học"
+      title={initialValues.id ? "Cập nhập năm học" : "Thêm năm học"}
       visible={isOpenYear}
       onOk={handleSubmit(onHandleSubmit)}
       onCancel={handleCancel}
       footer={null}
     >
-      <Row>
+      <Form
+        labelCol={{ xs: { span: 24 }, sm: { span: 6 } }}
+        wrapperCol={{ xs: { span: 24 }, sm: { span: 14 } }}
+      >
         <Field
-          style={{ width: "100%", marginBottom: "20px" }}
+          style={{}}
           label="Từ năm"
           name="fromYear"
-          component={renderTextField}
+          component={renderInput}
           type="number"
         />
-      </Row>
-      <Row>
         <Field
-          style={{ width: "100%", marginBottom: "20px" }}
           label="Đến năm"
           name="toYear"
-          component={renderTextField}
+          component={renderInput}
           type="number"
         />
-      </Row>
-      <Button
-        key="button"
-        type="primary"
-        onClick={() => onHandleDelete(initialValues)}
-      >
-        Xoá
-      </Button>
-      <Button
-        disabled={invalid || submitting}
-        key="submit"
-        type="primary"
-        onClick={handleSubmit(onHandleSubmit)}
-      >
-        Lưu lại
-      </Button>
-      <Button key="back" onClick={handleCancel}>
-        huỷ bỏ
-      </Button>
+        <FormItem>
+          <Button key="back" onClick={handleCancel} style={{ float: "right" }}>
+            huỷ bỏ
+          </Button>
+          <Button
+            style={{ float: "right", margin: "0px 10px" }}
+            disabled={invalid || submitting}
+            key="submit"
+            type="primary"
+            onClick={handleSubmit(onHandleSubmit)}
+          >
+            Lưu lại
+          </Button>
+          {initialValues.id ? (
+            <Button
+              style={{ float: "right" }}
+              key="button"
+              type="primary"
+              onClick={() => onHandleDelete(initialValues)}
+            >
+              Xoá
+            </Button>
+          ) : null}
+        </FormItem>
+      </Form>
     </Modal>
   );
 };

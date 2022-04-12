@@ -1,6 +1,21 @@
 import React from "react";
 
-const ClassList = () => {
+const ClassList = ({ ltClass, onHandleSelect }) => {
+  const renderClassItem = () => {
+    let xhtml = null;
+    if (ltClass) {
+      xhtml = ltClass.map((o, index) => {
+        return (
+          <tr key={o.id} onDoubleClick={() => onHandleSelect(o)}>
+            <td>{index + 1}</td>
+            <td>{o.name}</td>
+            <td>{o.grade}</td>
+          </tr>
+        );
+      });
+    }
+    return xhtml;
+  };
   return (
     <table className="table table-hover">
       <thead>
@@ -11,11 +26,10 @@ const ClassList = () => {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>10a1</td>
-          <td>10</td>
-        </tr>
+        {
+          //item
+          renderClassItem()
+        }
       </tbody>
     </table>
   );

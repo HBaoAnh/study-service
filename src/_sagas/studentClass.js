@@ -1,6 +1,7 @@
-import { put, call, delay } from "redux-saga/effects";
+import { put, call, delay,takeLatest,takeEvery } from "redux-saga/effects";
 import { showLoading, hideLoading } from "../_actions/ui";
 import { STATUS_CODE } from "../_constants";
+import * as _studentClassActions from "../_constants/studentclass";
 import {
   transferStudentClassAPI,
   getStudentClassAPI,
@@ -11,9 +12,9 @@ import {
   transferStudentClassSuccess,
   saveStudentClassSuccess,
 } from "../_actions/studentClass";
-import { hideModal, hideModalTransfer } from "../_actions/modalForm";
+import { hideModal } from "../_actions/modalForm";
 
-export function* getStudentByYearClass({ payload }) {
+ function* getStudentByYearClass({ payload }) {
   yield put(showLoading());
   const resp = yield call(getStudentClassAPI, payload);
   const { data, status } = resp;
@@ -24,7 +25,7 @@ export function* getStudentByYearClass({ payload }) {
   yield put(hideLoading());
 }
 
-export function* saveStudentClassSaga({ payload }) {
+ function* saveStudentClassSaga({ payload }) {
   yield put(showLoading());
   const resp = yield call(saveStudentClassAPI, payload);
   const { data, status } = resp;
@@ -39,14 +40,29 @@ export function* saveStudentClassSaga({ payload }) {
   yield put(hideLoading());
 }
 
-export function* transferStudentClassSaga({ payload }) {
+ function* transferStudentClassSaga({ payload }) {
   yield put(showLoading());
   const resp = yield call(transferStudentClassAPI, payload);
   const { status, data } = resp;
   if (status) {
     yield put(transferStudentClassSuccess(data.data));
-    yield put(hideModalTransfer());
+    yield put(hideModal());
   }
   yield delay(1000);
   yield put(hideLoading());
+}
+
+export default function * studentClassSaga() {
+  yield takeLatest(
+    _studentClassActions.GET_STUDENT_CLASS,
+    getStudentByYearClass
+  );
+  yield takeEvery(
+    _studentClassActions.SAVE_STUDENT_CLASS,
+    saveStudentClassSaga
+  );
+  yield takeEvery(
+    _studentClassActions.TRANSFER_STUDENT_CLASS,
+    transferStudentClassSaga
+  );
 }

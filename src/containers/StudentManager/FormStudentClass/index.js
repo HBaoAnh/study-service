@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useDispatch } from "react-redux";
 import { reduxForm, Field } from "redux-form";
 import * as _formActions from "../../../_actions/modalForm";
-import { validateStudent } from "../../../Shares/FormHelper/validate";
+import { validateStudent } from "../../../Shares/validate";
 import { Button, Modal, Input, DatePicker, Form, Radio } from "antd";
 import helpField from "../../../Shares/HelpField";
 
@@ -51,12 +51,15 @@ let FormStudentClass = (props) => {
   return (
     <Modal
       visible={open}
-      title="Title"
+      title={initialValues.id ? "Cập nhập học sinh":"Thêm học sinh"}
       onOk={handleSubmit(onHandleSubmit)}
       onCancel={onHandleClose}
       footer={null}
     >
-      <Form>
+      <Form
+        labelCol={{ xs: { span: 24 }, sm: { span: 6 } }}
+        wrapperCol={{ xs: { span: 24 }, sm: { span: 14 } }}
+      >
         <Field
           id="name"
           placeholder="Họ và Tên"
@@ -105,7 +108,7 @@ let FormStudentClass = (props) => {
           )}
 
           <Button
-          style={{margin: "0px 10px"}}
+            style={{ margin: "0px 10px" }}
             disabled={invalid || submitting}
             key="submit"
             type="primary"

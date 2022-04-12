@@ -54,7 +54,6 @@ const YearSelect = ({ onChange }) => {
   return (
     <Select
       value={id}
-      style={{ width: "120px", marginRight: "10px" }}
       onChange={handleChange}
     >
       {renOptions()}

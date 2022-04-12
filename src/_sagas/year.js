@@ -1,5 +1,6 @@
-import { put, call, delay } from "redux-saga/effects";
+import { put, call, delay, takeLatest, takeEvery } from "redux-saga/effects";
 import { showLoading, hideLoading } from "../_actions/ui";
+import * as _yearActions from "../_constants/year";
 import { STATUS_CODE } from "../_constants";
 import { getAllYearAPI, saveYearAPI, deleteYearAPI } from "../_apis/yearAPI";
 import {
@@ -7,9 +8,9 @@ import {
   saveYearSuccess,
   deleteYearSuccess,
 } from "../_actions/year";
-import { hideModalYear } from "../_actions/modalForm";
+import { hideModal } from "../_actions/modalForm";
 
-export function* getAllYearSaga() {
+function* getAllYearSaga() {
   yield put(showLoading());
   const res = yield call(getAllYearAPI);
   const { data, status } = res;
@@ -20,7 +21,7 @@ export function* getAllYearSaga() {
   yield put(hideLoading());
 }
 
-export function* saveYearSaga({ payload }) {
+function* saveYearSaga({ payload }) {
   yield put(showLoading());
   const res = yield call(saveYearAPI, payload);
   const { data, status } = res;
@@ -28,20 +29,26 @@ export function* saveYearSaga({ payload }) {
     const isAdd = payload.id === 0;
     yield put(saveYearSuccess(data.data, isAdd));
     if (!isAdd) {
-      yield put(hideModalYear());
+      yield put(hideModal());
     }
   }
   yield delay(1000);
   yield put(hideLoading());
 }
 
-export function* deleteYearSaga({ payload }) {
+function* deleteYearSaga({ payload }) {
   yield put(showLoading());
   const res = yield call(deleteYearAPI, payload);
   if (res.status === STATUS_CODE.DELETE) {
     yield put(deleteYearSuccess(payload));
-    yield put(hideModalYear());
+    yield put(hideModal());
   }
   yield delay(1000);
   yield put(hideLoading());
+}
+
+export default function* yearSaga() {
+  yield takeLatest(_yearActions.GET_ALL_YEAR, getAllYearSaga);
+  yield takeEvery(_yearActions.SAVE_YEAR, saveYearSaga);
+  yield takeLatest(_yearActions.DELETE_YEAR, deleteYearSaga);
 }

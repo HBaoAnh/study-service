@@ -15,6 +15,22 @@ export const showModalYear = () => ({
 export const hideModalYear = () => ({
   type: _TypesModal.HIDE_MODAL_YEAR,
 });
+
+export const showModalClass = () => ({
+  type: _TypesModal.SHOW_MODAL_CLASS,
+});
+
+export const hideModalClass = () => ({
+  type: _TypesModal.HIDE_MODAL_CLASS,
+});
+
+export const showModalSubject = () => ({
+  type: _TypesModal.SHOW_MODAL_SUBJECT,
+});
+
+export const hideModalSubject = () => ({
+  type: _TypesModal.HIDE_MODAL_SUBJECT,
+});
 export const showModalTransfer = () => ({
   type: _TypesModal.SHOW_MODAL_TRANSFER,
 });

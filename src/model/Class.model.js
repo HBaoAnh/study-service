@@ -5,7 +5,7 @@ class ClassModel {
     }
     this.id = data.id || 0;
     this.name = data.name || "";
-    this.grade = data.grade !== undefined ? data.grade : "Khác";
+    this.grade = data.grade || "";
   }
 }
 
