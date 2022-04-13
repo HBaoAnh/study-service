@@ -1,0 +1,7 @@
+export const GET_ALL_CLASS = "GET_ALL_CLASS";
+export const GET_ALL_CLASS_SUC = "GET_ALL_CLASS_SUC";
+export const SAVE_CLASS = "SAVE_CLASS";
+export const SAVE_CLASS_SUC = "SAVE_CLASS_SUC";
+export const DELETE_CLASS = "DELETE_CLASS";
+export const DELETE_CLASS_SUC = "DELETE_CLASS_SUC";
+export const SET_CLASS_EDITING = "SET_CLASS_EDITING";
